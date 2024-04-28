@@ -8,7 +8,7 @@ public class Bluck {
 
     public static void main(String[] args) throws Exception {
         task curtask = new task();
-        curtask.addJarFile("PrimeSum.jar");
+        curtask.addJarFile("SoloveySum.jar");
         ArrayList<Node> nodes = fromFile(curtask.findFile("input"));
         long x = 0;
         AMInfo info = new AMInfo(curtask, null);
@@ -16,7 +16,7 @@ public class Bluck {
         for(Node n: nodes) {
             point p = info.createPoint();
             channel c = p.createChannel();
-            p.execute("PrimeSum");
+            p.execute("SoloveySum");
             c.write(n);
             channels.add(c);
         }

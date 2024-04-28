@@ -2,7 +2,7 @@ import parcs.*;
 import java.lang.Math;
 import java.util.Random;
 
-public class PrimeSum implements AM {
+public class SoloveySum implements AM {
     private static final int NODES = 4;
 
     static long modulo(long base,
