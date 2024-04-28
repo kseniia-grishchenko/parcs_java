@@ -73,7 +73,6 @@ public class SoloveySum implements AM {
 
     public void run(AMInfo info) {
         Node n = (Node) info.parent.readObject();
-        System.out.println("[" + n.l + " " + n.r + "] Build started.");
 
         int totalNumbers = n.r - n.l + 1;
         int numbersPerNode = totalNumbers / NODES;
@@ -85,6 +84,8 @@ public class SoloveySum implements AM {
         if (n.div < extra) {
             end += 1;
         }
+
+        System.out.println("[" + start + " " + end + "] Build started.");
 
         long sum = 0L;
         for (int i = start; i <= end; i++) {
