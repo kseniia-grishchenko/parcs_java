@@ -5,102 +5,69 @@ import java.util.Random;
 public class SoloveySum implements AM {
     private static final int NODES = 4;
 
-    static long modulo(long base,
-                       long exponent,
-                       long mod)
-    {
-        long x = 1;
-        long y = base;
-
-        while (exponent > 0)
-        {
-            if (exponent % 2 == 1)
-                x = (x * y) % mod;
-
-            y = (y * y) % mod;
-            exponent = exponent / 2;
-
+    private static long modularExponentiation(long base, long exponent, long modulus) {
+        long result = 1;
+        base = base % modulus;
+        while (exponent > 0) {
+            if (exponent % 2 == 1) { // If exponent is odd, multiply the base with result
+                result = (result * base) % modulus;
+            }
+            exponent = exponent / 2; // Divide the exponent by 2
+            base = (base * base) % modulus; // Square the base
         }
-        return x % mod;
+        return result;
     }
 
-    // To calculate Jacobian symbol of
-// a given number
-    static long calculateJacobian(long a, long n)
-    {
-        if (n <= 0 || n % 2 == 0)
-            return 0;
-
-        long ans = 1L;
-
-        if (a < 0)
-        {
-            a = -a; // (a/n) = (-a/n)*(-1/n)
-            if (n % 4 == 3)
-                ans = -ans; // (-1/n) = -1 if n = 3 (mod 4)
+    // Calculate the Jacobian symbol (a/n)
+    private static int jacobian(long a, long n) {
+        int ans = 1;
+        if (a < 0) {
+            a = -a; // Make 'a' positive
+            if (n % 4 == 3) {
+                ans = -ans; // If 'n ≡ 3 (mod 4)', the result is negated
+            }
         }
-
-        if (a == 1)
-            return ans; // (1/n) = 1
-
-        while (a != 0)
-        {
-            if (a < 0)
-            {
-                a = -a; // (a/n) = (-a/n)*(-1/n)
-                if (n % 4 == 3)
-                    ans = -ans; // (-1/n) = -1 if n = 3 (mod 4)
-            }
-
-            while (a % 2 == 0)
-            {
+        while (a != 0) {
+            while (a % 2 == 0) {
                 a /= 2;
-                if (n % 8 == 3 || n % 8 == 5)
+                if (n % 8 == 3 || n % 8 == 5) {
                     ans = -ans;
+                }
             }
-
+            // Swap 'a' and 'n'
             long temp = a;
             a = n;
             n = temp;
 
-            if (a % 4 == 3 && n % 4 == 3)
+            if (a % 4 == 3 && n % 4 == 3) {
                 ans = -ans;
-
+            }
             a %= n;
-            if (a > n / 2)
-                a = a - n;
         }
-
-        if (n == 1)
+        if (n == 1) {
             return ans;
-
-        return 0;
+        } else {
+            return 0;
+        }
     }
 
-    // To perform the Solovay-Strassen Primality Test
-    static boolean soloveyStrassen(long p,
-                                   int iteration)
-    {
-        if (p < 2)
-            return false;
-        if (p != 2 && p % 2 == 0)
-            return false;
 
-        // Create Object for Random Class
+    // Solovay-Strassen Primality Test
+    public static boolean isPrime(long p, int iterations) {
+        if (p < 2) return false; // 0 and 1 are not prime numbers
+        if (p != 2 && p % 2 == 0) return false; // Even numbers are not prime
+
         Random rand = new Random();
-        for(int i = 0; i < iteration; i++)
-        {
+        for (int i = 0; i < iterations; i++) {
+            long a = rand.nextInt((int) Math.min(p - 1, Integer.MAX_VALUE)) + 1; // Generate 'a' where 1 <= a < p
+            long jacobianValue = (p + jacobian(a, p)) % p;
+            long mod = modularExponentiation(a, (p - 1) / 2, p);
 
-            // Generate a random number r
-            long r = Math.abs(rand.nextLong());
-            long a = r % (p - 1) + 1;
-            long jacobian = (p + calculateJacobian(a, p)) % p;
-            long mod = modulo(a, (p - 1) / 2, p);
-
-            if (jacobian == 0 || mod != jacobian)
-                return false;
+            if (jacobianValue == 0 || mod != jacobianValue) {
+                return false; // 'p' is not a prime
+            }
         }
-        return true;
+        return true; // 'p' is probably a prime
     }
 
 
@@ -113,7 +80,7 @@ public class SoloveySum implements AM {
         while (start % NODES != n.div) start++;
         for (int i = start; i <= n.r; i += NODES) {
             long x = new Long(i);
-            if(soloveyStrassen(x, 10)) sum += i;
+            if(isPrime(x, 10)) sum += i;
         }
         System.out.println("[" + n.l + " " + n.r + "] Build finished.");
         info.parent.write(sum);
