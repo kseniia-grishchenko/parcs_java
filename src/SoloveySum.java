@@ -95,7 +95,7 @@ public class SoloveySum implements AM {
             }
         }
 
-        System.out.println("[" + n.l + " " + n.r + "] Build finished.");
+        System.out.println("[" + start + " " + end + "] Build finished.");
         info.parent.write(sum);
     }
 }
