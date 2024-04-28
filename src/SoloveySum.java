@@ -80,7 +80,10 @@ public class SoloveySum implements AM {
         while (start % NODES != n.div) start++;
         for (int i = start; i <= n.r; i += NODES) {
             long x = new Long(i);
-            if(isPrime(x, 10)) sum += i;
+            if(isPrime(x, 10)) {
+                System.out.println(x, " is Prime");
+                sum += i;
+            }
         }
         System.out.println("[" + n.l + " " + n.r + "] Build finished.");
         info.parent.write(sum);
