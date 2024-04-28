@@ -2,7 +2,7 @@ import parcs.*;
 import java.lang.Math;
 import java.util.Random;
 
-public class SoloveySum implements AM {
+public class SolovayStrassenTask implements AM {
     private static final int NODES = 4;
 
     private static long modularExponentiation(long base, long exponent, long modulus) {

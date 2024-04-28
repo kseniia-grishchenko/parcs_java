@@ -3,12 +3,12 @@ import java.io.File;
 
 import parcs.*;
 
-public class Bluck {
+public class SolovayStrassen {
     private final static int NODES = 4;
 
     public static void main(String[] args) throws Exception {
         task curtask = new task();
-        curtask.addJarFile("SoloveySum.jar");
+        curtask.addJarFile("SolovayStrassenTask.jar");
         ArrayList<Node> nodes = fromFile(curtask.findFile("input"));
         long x = 0;
         AMInfo info = new AMInfo(curtask, null);
@@ -16,7 +16,7 @@ public class Bluck {
         for(Node n: nodes) {
             point p = info.createPoint();
             channel c = p.createChannel();
-            p.execute("SoloveySum");
+            p.execute("SolovayStrassenTask");
             c.write(n);
             channels.add(c);
         }
