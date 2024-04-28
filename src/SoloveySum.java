@@ -81,7 +81,7 @@ public class SoloveySum implements AM {
         for (int i = start; i <= n.r; i += NODES) {
             long x = new Long(i);
             if(isPrime(x, 10)) {
-                System.out.println(x, " is Prime");
+                System.out.println(x + " is Prime");
                 sum += i;
             }
         }
