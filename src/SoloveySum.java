@@ -79,6 +79,7 @@ public class SoloveySum implements AM {
         int numbersPerNode = totalNumbers / NODES;
         int extra = totalNumbers % NODES;
 
+        System.out.println("Div " + n.div + " " + "Extra " + extra);
         int start = n.l + n.div * numbersPerNode + Math.min(n.div, extra);
         int end = start + numbersPerNode - 1;
         if (n.div < extra) {
